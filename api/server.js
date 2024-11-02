@@ -1,10 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); 
+
 const userRoutes = require('./routes/userRoutes');
 
 const PORT = process.env.PORT || 5000;
 const app = express();
+
 app.use(express.json()); // Middleware to parse JSON bodies
+app.use(cors()); // This will allow all origins
 
 // Connect to MongoDB (update the connection string as needed)
 mongoose.connect('mongodb://localhost:27017/mydatabase', { useNewUrlParser: true, useUnifiedTopology: true })

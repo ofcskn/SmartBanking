@@ -5,24 +5,20 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { FlatList } from 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import config from '../config/config';
+import { User } from '../models/User';
+
 
 export default function HomeScreen() {
-  
-    const data = [
-    {
-      id: '1',
-      title: 'First User',
-    },
-    {
-      id: '1',
-      title: 'Second User',
-    },
-    {
-      id: '1',
-      title: 'Third User',
-    },
-  ];
+    const [data, setData] = useState<User[]>();
+
+    useEffect(() => {
+        axios.get(`${config.apiUrl}/users`)
+            .then(response => setData(response.data))
+            .catch(error => console.error("Error fetching data:", error));
+    }, []);
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -33,11 +29,11 @@ export default function HomeScreen() {
         />
       }>
      <ThemedView style={styles.stepContainer}>
-        <FlatList data={data}
-        renderItem={({item}) => <ThemedText>{item.title}</ThemedText>}
-        keyExtractor={item => item.id}>
-            <ThemedText>{}</ThemedText>
-        </FlatList>
+        <FlatList
+            data={data}
+            renderItem={({item}) => <ThemedText> {item.name} - {item.email}</ThemedText>}
+            keyExtractor={item => item._id}
+        />
       </ThemedView>
     </ParallaxScrollView>
   );
