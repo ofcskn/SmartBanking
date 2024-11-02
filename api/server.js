@@ -1,12 +1,17 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
+
+const PORT = process.env.PORT || 5000;
 const app = express();
+app.use(express.json()); // Middleware to parse JSON bodies
 
-const port = process.env.PORT || 3000; // Use the port provided by the host or default to 3000
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+// Connect to MongoDB (update the connection string as needed)
+mongoose.connect('mongodb://localhost:27017/mydatabase', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
-// Define a route to handle incoming requests
-app.get('/', (req, res) => {
-  res.send('Hello, Express!');
-});
+// Use the user routes
+app.use('/api/users', userRoutes); // All user routes will be prefixed with /api/users
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
