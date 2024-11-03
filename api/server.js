@@ -14,7 +14,7 @@ dotenv.config();
 const web3 = new Web3("http://127.0.0.1:7545");
 
 // Smart contract details
-const contractAddress = process.env.CONTRACT_ADDRESS; 
+const contractAddress = process.env.API_CONTRACT_ADDRESS; 
 const contractABI = [{
     "anonymous": false,
     "inputs": [
@@ -98,7 +98,7 @@ app.use(cors()); // This will allow all origins
 
 
 // Connect to MongoDB (update the connection string as needed)
-mongoose.connect(process.env.CONNECTION_STR, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.API_CONNECTION_STR, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 
