@@ -23,34 +23,41 @@ exports.createUser = async (req, res) => {
     }
 };
 
-// get balance of the user
-exports.getBalance = async (req, res) => {
-    const { address } = req.params;
-    console.log("Address of the user is ", address);
+// save wallet
+exports.saveWallet = async (req, res) => {
+    const { address, _id } = req.params;
+
     try {
-        const balance = await contract.methods.getBalance().call({ from: address });
-        res.json({ balance: web3.utils.fromWei(balance, 'ether') }); // Convert from wei
+        let user = await User.findOne({ _id: _id });
+
+        if (user) {
+            user.walletAddress= address;
+            await user.save();
+            return res.status(201).json({ message: 'Wallet address saved successfully', user });
+        }
+
+        res.status(200).json({ message: 'Wallet address already exists', user });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error saving wallet address:', error);
+        res.status(500).json({ error: 'Failed to save wallet address' });
     }
 };
 
 // Function to get user balance
 exports.getUserWithBalance = async (req, res) => {
-    const userId = req.params.id; // Get user ID from URL params
+    const userId = req.params._id; // Get user ID from URL params
     try {
         const user = await User.findById(userId); // Fetch user from MongoDB
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
-        const balance = await contractService.getBalance(user.ethAddress); // Get balance using Web3
-        
-        res.json({
-            user,
-            balance,
-        });
+        if (user.walletAddress){ 
+            const balance = await contractService.getBalance(user.walletAddress); // Get balance using Web3
+            return res.status(200).json({
+                user,
+                balance,
+            });
+        }
     } catch (error) {
         console.error('Error fetching user balance:', error);
         res.status(500).json({ error: 'Failed to retrieve user balance' });

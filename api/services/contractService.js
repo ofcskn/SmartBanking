@@ -90,8 +90,9 @@ class ContractService {
 
     async getBalance(address) {
         try {
-            const balance = await this.contract.methods.balanceOf(address).call();
-            return balance;
+            const balance = await this.web3.eth.getBalance(address);
+            // Return ETH balance
+            return this.web3.utils.fromWei(balance, 'ether');
         } catch (error) {
             throw new Error('Failed to fetch balance: ' + error.message);
         }

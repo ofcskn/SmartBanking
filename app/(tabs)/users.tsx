@@ -16,10 +16,11 @@ export default function HomeScreen() {
 
     // Creating a user
     const [name, setName] = useState<string>('');
+    const [walletAddress, setWalletAddress] = useState<string>('');
     const [email, setEmail] = useState<string>('');
   
   const handleSubmit = (e:any) =>  {
-        const response = axios.post(`${config.apiUrl}/users/create`, {"name": name, "email": email})
+        const response = axios.post(`${config.apiUrl}/users/create`, {"name": name, "email": email, "walletAddress": walletAddress})
         .then((response) => {
           data?.push(response.data);
           setCreateUserModalVisible(false);
@@ -52,7 +53,10 @@ export default function HomeScreen() {
      <ThemedView style={styles.stepContainer}>
         <FlatList
             data={data}
-            renderItem={({item}) => <ThemedText> {item.name} - {item.balance == null ? 0 : item.balance} ETH</ThemedText>}
+            renderItem={({item}) => <View>
+              <ThemedText> {item.name} - {item.email}</ThemedText>
+              {item.walletAddress == null ? "": <ThemedText> {item.walletAddress} - {item.balance == null ? 0 : item.balance} ETH</ThemedText>} 
+              </View>}
             keyExtractor={item => item._id}
         />
         <Modal
@@ -78,6 +82,12 @@ export default function HomeScreen() {
           onChangeText={(data) => setEmail(data)}
           value={email}
           placeholder="Email"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(data) => setWalletAddress(data)}
+          value={walletAddress}
+          placeholder="Wallet Adress (0x..)"
         />
         <View style={{"marginBottom": 10}}>
           <Button  title="Submit" onPress={(data:any) => handleSubmit(data)} />
