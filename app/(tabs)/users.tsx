@@ -9,8 +9,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../config/config';
 import { User } from '../models/User';
-import { useForm, Controller } from 'react-hook-form';
-import { AnimatedView } from 'react-native-reanimated/lib/typescript/reanimated2/component/View';
 
 export default function HomeScreen() {
     const [data, setData] = useState<User[]>();
@@ -54,7 +52,7 @@ export default function HomeScreen() {
      <ThemedView style={styles.stepContainer}>
         <FlatList
             data={data}
-            renderItem={({item}) => <ThemedText> {item.name} - {item.email}</ThemedText>}
+            renderItem={({item}) => <ThemedText> {item.name} - {item.balance == null ? 0 : item.balance} ETH</ThemedText>}
             keyExtractor={item => item._id}
         />
         <Modal
