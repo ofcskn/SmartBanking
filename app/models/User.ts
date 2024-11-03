@@ -6,4 +6,5 @@ export interface User {
   email: string; // User's email address (string type)
   balance: Double; // Balance of the user in the bank
   walletAddress: string; // User's wallet address (string type)
+  password: string; // User's password
 }

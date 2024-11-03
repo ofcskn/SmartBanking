@@ -27,14 +27,15 @@ export default function HomeScreen() {
   const [name, setName] = useState<string>('');
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  // Create a User
   const handleSubmit = (e: any) => {
     const response = axios
       .post(`${config.apiUrl}/users/create`, {
         name: name,
         email: email,
         walletAddress: walletAddress,
+        password: password,
       })
       .then((response) => {
         data?.push(response.data);
@@ -44,7 +45,7 @@ export default function HomeScreen() {
         console.log('Error:', error);
       });
   };
-  // Get Users
+
   useEffect(() => {
     axios
       .get(`${config.apiUrl}/users`)
@@ -120,6 +121,15 @@ export default function HomeScreen() {
               onChangeText={(data) => setWalletAddress(data)}
               value={walletAddress}
               placeholder="Wallet Adress (0x..)"
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={(data) => setPassword(data)}
+              value={password}
+              placeholder="Password"
+              autoComplete="off"
+              secureTextEntry={true}
+              passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
             />
             <View style={{ marginBottom: 10 }}>
               <Button
