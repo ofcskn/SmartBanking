@@ -3,21 +3,21 @@
 // const mnemonic = "YOUR_MNEMONIC"; // Your wallet's mnemonic
 
 module.exports = {
-    networks: {
-        // rinkeby: {
-        //     provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
-        //     network_id: 4, // Rinkeby's id
-        //     gas: 5500000, // Gas limit
-        // },
-        development: {
-            host: "127.0.0.1", // Localhost (default: none)
-            port: 7545, // Ganache port (default: none)
-            network_id: "5777", // Any network (default: none)
-        },
+  networks: {
+    // rinkeby: {
+    //     provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
+    //     network_id: 4, // Rinkeby's id
+    //     gas: 5500000, // Gas limit
+    // },
+    development: {
+      host: '127.0.0.1', // Localhost (default: none)
+      port: 7545, // Ganache port (default: none)
+      network_id: '5777', // Any network (default: none)
     },
-    compilers: {
-        solc: {
-            version: "0.8.0", // Specify your Solidity version
-        },
+  },
+  compilers: {
+    solc: {
+      version: '0.8.0', // Specify your Solidity version
     },
+  },
 };

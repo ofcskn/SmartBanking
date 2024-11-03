@@ -1,14 +1,14 @@
 const environment = process.env.NODE_ENV || 'development';
 
 type Config = {
-    apiUrl: string;
-  };
-  
-  type EnvironmentConfig = {
-    [key: string]: Config; // This allows for any string as a key mapping to a Config type
-  };
+  apiUrl: string;
+};
 
-const config:EnvironmentConfig = {
+type EnvironmentConfig = {
+  [key: string]: Config; // This allows for any string as a key mapping to a Config type
+};
+
+const config: EnvironmentConfig = {
   development: {
     apiUrl: 'http://localhost:5000/api',
   },
