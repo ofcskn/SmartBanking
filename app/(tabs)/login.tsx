@@ -1,39 +1,19 @@
 import { StyleSheet, Button, Modal, View } from 'react-native';
 import React, { useState } from 'react';
-import axios from 'axios';
-import config from '../config/config';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { router } from 'expo-router';
-import { setStorageItemAsync } from '../../hooks/useStorageState';
-import * as SecureStore from 'expo-secure-store';
 import { ThemedView } from '@/components/ThemedView';
+import { useSession } from '../ctx';
+import { Redirect } from 'expo-router';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const { signIn, session } = useSession();
 
-  const handleSubmit = () => {
-    axios
-      .post(`${config.apiUrl}/users/login`, {
-        email: email,
-        password: password,
-      })
-      .then(async (response) => {
-        if (response.status == 200) {
-          const token = response.data.token;
-          await setStorageItemAsync('token', token);
-
-          // Clear data
-          setEmail('');
-          setPassword('');
-          // Redirect to the home
-          router.push('/(tabs)/');
-        }
-      })
-      .catch((error) => console.error('Error fetching data:', error));
-  };
+  // if (session) {
+  //   return <Redirect href="/(tabs)/" />;
+  // }
 
   return (
     <SafeAreaProvider>
@@ -53,7 +33,17 @@ export default function LoginScreen() {
           passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
         />
         <ThemedView style={{ marginBottom: 10 }}>
-          <Button title="Login" onPress={(e: any) => handleSubmit()} />
+          <Button
+            title="Login"
+            onPress={() => {
+              //sign in
+              signIn(email, password);
+
+              // Clear data
+              setEmail('');
+              setPassword('');
+            }}
+          />
         </ThemedView>
       </SafeAreaView>
     </SafeAreaProvider>

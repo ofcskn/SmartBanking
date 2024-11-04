@@ -21,6 +21,8 @@ import { useTheme } from '@react-navigation/native'; // If you're using React Na
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { useSession } from '../ctx';
+import { Redirect } from 'expo-router';
 export default function UsersScreen() {
   const { colors } = useTheme(); // Get theme colors if using a theme
   const [data, setData] = useState<User[]>();

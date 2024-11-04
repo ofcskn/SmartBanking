@@ -5,9 +5,16 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useSession } from '../ctx';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { session, isLoading } = useSession();
+
+  if (isLoading == true) {
+    return <ThemedText>Loading...</ThemedText>;
+  }
 
   return (
     <Tabs
@@ -46,6 +53,21 @@ export default function TabLayout() {
         name="login"
         options={{
           title: 'Login',
+          href: !session ? '/(tabs)/login' : null,
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome5
+              size={24}
+              name={focused ? 'user' : 'user-alt'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: 'Account',
+          href: session ? '/(tabs)/account' : null,
           tabBarIcon: ({ color, focused }) => (
             <FontAwesome5
               size={24}
