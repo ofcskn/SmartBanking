@@ -1,42 +1,40 @@
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  SectionList,
-  Button,
-  Modal,
-  View,
-  TextInput,
-} from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Button, Modal, View } from 'react-native';
+import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config/config';
-import { User } from '../models/User';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { router } from 'expo-router';
+import { setStorageItemAsync } from '../../hooks/useStorageState';
+import * as SecureStore from 'expo-secure-store';
+import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
-  const [data, setData] = useState<User[]>();
-
+export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = (e: any) => {
-    console.log(e);
+  const handleSubmit = () => {
+    axios
+      .post(`${config.apiUrl}/users/login`, {
+        email: email,
+        password: password,
+      })
+      .then(async (response) => {
+        if (response.status == 200) {
+          const token = response.data.token;
+          await setStorageItemAsync('token', token);
+
+          // Clear data
+          setEmail('');
+          setPassword('');
+          // Redirect to the home
+          router.push('/(tabs)/');
+        }
+      })
+      .catch((error) => console.error('Error fetching data:', error));
   };
 
-  useEffect(() => {
-    axios
-      .get(`${config.apiUrl}/users/auth`)
-      .then((response) => setData(response.data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ margin: 20 }}>
@@ -54,9 +52,9 @@ export default function HomeScreen() {
           secureTextEntry={true}
           passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
         />
-        <View style={{ marginBottom: 10 }}>
-          <Button title="Login" onPress={(e: any) => handleSubmit(e)} />
-        </View>
+        <ThemedView style={{ marginBottom: 10 }}>
+          <Button title="Login" onPress={(e: any) => handleSubmit()} />
+        </ThemedView>
       </SafeAreaView>
     </SafeAreaProvider>
   );

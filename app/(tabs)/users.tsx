@@ -17,10 +17,11 @@ import axios from 'axios';
 import config from '../config/config';
 import { User } from '../models/User';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { ThemeProvider, useTheme } from '@react-navigation/native'; // If you're using React Navigation
+import { useTheme } from '@react-navigation/native'; // If you're using React Navigation
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
-export default function HomeScreen() {
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+export default function UsersScreen() {
   const { colors } = useTheme(); // Get theme colors if using a theme
   const [data, setData] = useState<User[]>();
   const [createUserModalVisible, setCreateUserModalVisible] = useState(false);
@@ -83,13 +84,13 @@ export default function HomeScreen() {
           )}
           keyExtractor={(item) => item._id}
         />
-        <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
+        <ThemedView style={{ marginTop: 10 }}>
           <Button
             title="Create a User"
             onPress={() => setCreateUserModalVisible(true)}
             accessibilityLabel="Create a user that has access the banking system"
           />
-        </View>
+        </ThemedView>
 
         <Modal
           animationType="slide"

@@ -5,12 +5,12 @@ const dotenv = require('dotenv');
 
 const userRoutes = require('./routes/userRoutes');
 
+dotenv.config();
+
 const PORT = process.env.PORT || 5000;
 const API_LOCALHOST = process.env.API_LOCALHOST || '0.0.0.0';
 
 const app = express();
-
-dotenv.config();
 
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(cors()); // This will allow all origins
