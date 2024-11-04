@@ -1,16 +1,13 @@
-import { Image, StyleSheet, Platform, Button } from 'react-native';
-
+import { Image, StyleSheet, Button } from 'react-native';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useState } from 'react';
-import { User } from '../models/User';
 import { useSession } from '../ctx';
 
 export default function HomeScreen() {
-  const { signOut } = useSession();
-  const [user] = useState<User>();
+  const { user, session, signOut } = useSession();
+
   return (
     <ParallaxScrollView
       isHaveHeader={true}
@@ -26,10 +23,19 @@ export default function HomeScreen() {
         <ThemedText type="subtitle">The Secure Bank</ThemedText>
       </ThemedView>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">
-          Hello, {user != null ? user.name : '[Name]'}!
-        </ThemedText>
-        <HelloWave />
+        {session ? (
+          <>
+            <ThemedText type="title">
+              Hello, {user != null ? user.name : '[Name]'}!
+            </ThemedText>
+            <HelloWave />
+          </>
+        ) : (
+          <>
+            <ThemedText type="title">Hello!</ThemedText>
+            <HelloWave />
+          </>
+        )}
       </ThemedView>
       <ThemedView>
         <Button

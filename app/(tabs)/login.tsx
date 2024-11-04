@@ -4,7 +4,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
 import { ThemedView } from '@/components/ThemedView';
 import { useSession } from '../ctx';
-import { Redirect } from 'expo-router';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');

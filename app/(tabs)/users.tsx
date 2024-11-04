@@ -1,30 +1,15 @@
-import {
-  StyleSheet,
-  Platform,
-  SectionList,
-  Button,
-  Modal,
-  View,
-  Text,
-  TextInput,
-  RefreshControl,
-} from 'react-native';
-
+import { StyleSheet, Button, Modal, View, RefreshControl } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../config/config';
-import { User } from '../models/User';
+import { User } from '../models/interfaces/User';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native'; // If you're using React Navigation
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { useSession } from '../ctx';
-import { Redirect } from 'expo-router';
 export default function UsersScreen() {
-  const { colors } = useTheme(); // Get theme colors if using a theme
   const [data, setData] = useState<User[]>();
   const [createUserModalVisible, setCreateUserModalVisible] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);

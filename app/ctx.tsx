@@ -1,16 +1,23 @@
-import { useContext, createContext, type PropsWithChildren } from 'react';
+import {
+  useContext,
+  createContext,
+  type PropsWithChildren,
+  useState,
+} from 'react';
 import { useStorageState } from '../hooks/useStorageState';
-import axios from 'axios';
+import axios, { AxiosHeaders } from 'axios';
 import config from './config/config';
 import { router } from 'expo-router';
+import { User } from './models/interfaces/User';
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => void;
   signOut: () => void;
+  user?: User | null;
   session?: string | null;
   isLoading: boolean;
 }>({
-  signIn: (email: string, password: string) => null,
+  signIn: () => null,
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -30,10 +37,26 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
+  const [signedUser, setSignedUser] = useState<User>();
+
+  console.log(session, isLoading);
+  if (session != null && signedUser == null) {
+    axios
+      .get(`${config.apiUrl}/users/verify`, {
+        headers: new AxiosHeaders('authorization: ' + session),
+      })
+      .then((res) => {
+        setSignedUser(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   return (
     <AuthContext.Provider
       value={{
+        user: signedUser,
         signIn: (email, password) => {
           axios
             .post(`${config.apiUrl}/users/login`, {
