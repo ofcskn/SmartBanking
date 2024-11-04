@@ -7,6 +7,7 @@ import {
   View,
   Text,
   TextInput,
+  RefreshControl,
 } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -23,6 +24,14 @@ export default function HomeScreen() {
   const { colors } = useTheme(); // Get theme colors if using a theme
   const [data, setData] = useState<User[]>();
   const [createUserModalVisible, setCreateUserModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   // Creating a user
   const [name, setName] = useState<string>('');
@@ -57,6 +66,9 @@ export default function HomeScreen() {
     <SafeAreaProvider>
       <SafeAreaView style={{ margin: 20 }}>
         <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           data={data}
           renderItem={({ item }) => (
             <ThemedView style={styles.card}>
@@ -78,6 +90,7 @@ export default function HomeScreen() {
             accessibilityLabel="Create a user that has access the banking system"
           />
         </View>
+
         <Modal
           animationType="slide"
           presentationStyle="pageSheet"
