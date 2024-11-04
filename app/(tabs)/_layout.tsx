@@ -14,6 +14,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: true,
+        headerTintColor: Colors[colorScheme ?? 'light'].tint,
       }}
     >
       <Tabs.Screen
@@ -33,7 +34,24 @@ export default function TabLayout() {
         options={{
           title: 'Users',
           tabBarIcon: ({ color, focused }) => (
-            <FontAwesome5 name="user" size={24} color="black" />
+            <FontAwesome5
+              size={24}
+              name={focused ? 'users' : 'users'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="login"
+        options={{
+          title: 'Login',
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome5
+              size={24}
+              name={focused ? 'user' : 'user-alt'}
+              color={color}
+            />
           ),
         }}
       />

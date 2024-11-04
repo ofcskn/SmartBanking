@@ -15,6 +15,7 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "proxy": "http://192.168.1.111:3000",
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",

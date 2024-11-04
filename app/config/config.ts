@@ -10,7 +10,7 @@ type EnvironmentConfig = {
 
 const config: EnvironmentConfig = {
   development: {
-    apiUrl: 'http://localhost:5000/api',
+    apiUrl: 'http://192.168.1.111:5000/api',
   },
   production: {
     apiUrl: 'https://api.example.com',

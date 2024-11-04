@@ -1,25 +1,26 @@
 import {
-  Image,
   StyleSheet,
   Platform,
   SectionList,
   Button,
   Modal,
   View,
+  Text,
   TextInput,
 } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../config/config';
 import { User } from '../models/User';
-
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeProvider, useTheme } from '@react-navigation/native'; // If you're using React Navigation
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedTextInput } from '@/components/ThemedTextInput';
 export default function HomeScreen() {
+  const { colors } = useTheme(); // Get theme colors if using a theme
   const [data, setData] = useState<User[]>();
   const [createUserModalVisible, setCreateUserModalVisible] = useState(false);
 
@@ -53,126 +54,107 @@ export default function HomeScreen() {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <Button
-        title="Create a User"
-        onPress={() => setCreateUserModalVisible(true)}
-        color="#333"
-        accessibilityLabel="Create a user that has access the banking system"
-      />
-      <ThemedView style={styles.stepContainer}>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ margin: 20 }}>
         <FlatList
           data={data}
           renderItem={({ item }) => (
-            <View>
-              <ThemedText>
-                {' '}
-                {item.name} - {item.email}
-              </ThemedText>
-              {item.walletAddress == null ? (
-                ''
-              ) : (
-                <ThemedText>
-                  {' '}
-                  {item.walletAddress} -{' '}
-                  {item.balance == null ? 0 : item.balance} ETH
+            <ThemedView style={styles.card}>
+              <View style={styles.infoContainer}>
+                <ThemedText type="subtitle">{item.name}</ThemedText>
+                <ThemedText>{item.email}</ThemedText>
+                <ThemedText style={{ fontSize: 14 }} type="link">
+                  {item.walletAddress}
                 </ThemedText>
-              )}
-            </View>
+              </View>
+            </ThemedView>
           )}
           keyExtractor={(item) => item._id}
         />
+        <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
+          <Button
+            title="Create a User"
+            onPress={() => setCreateUserModalVisible(true)}
+            accessibilityLabel="Create a user that has access the banking system"
+          />
+        </View>
         <Modal
           animationType="slide"
+          presentationStyle="pageSheet"
           transparent={false}
           visible={createUserModalVisible}
           onRequestClose={() => {
             setCreateUserModalVisible(!createUserModalVisible);
           }}
         >
-          <ScrollView>
-            <View>
-              <ThemedText style={{ color: '#000' }} type="title" darkColor="">
-                Create a User
-              </ThemedText>
-            </View>
-            <TextInput
-              style={styles.input}
-              onChangeText={(data) => setName(data)}
-              value={name}
-              placeholder="Name"
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(data) => setEmail(data)}
-              value={email}
-              placeholder="Email"
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(data) => setWalletAddress(data)}
-              value={walletAddress}
-              placeholder="Wallet Adress (0x..)"
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(data) => setPassword(data)}
-              value={password}
-              placeholder="Password"
-              autoComplete="off"
-              secureTextEntry={true}
-              passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
-            />
-            <View style={{ marginBottom: 10 }}>
-              <Button
-                title="Submit"
-                onPress={(data: any) => handleSubmit(data)}
-              />
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Button
-                title="Close Modal"
-                onPress={() =>
-                  setCreateUserModalVisible(!createUserModalVisible)
-                }
-              />
-            </View>
-          </ScrollView>
+          <ThemedView style={{ height: '100%' }}>
+            <SafeAreaProvider>
+              <SafeAreaView style={{ margin: 20 }}>
+                <ThemedText type="title" style={{ marginBottom: 20 }}>
+                  Create User
+                </ThemedText>
+                <ThemedTextInput
+                  onChangeText={(data) => setName(data)}
+                  value={name}
+                  placeholder="Name"
+                ></ThemedTextInput>
+                <ThemedTextInput
+                  onChangeText={(data) => setEmail(data)}
+                  value={email}
+                  placeholder="Email"
+                />
+                <ThemedTextInput
+                  onChangeText={(data) => setWalletAddress(data)}
+                  value={walletAddress}
+                  placeholder="Wallet Adress (0x..)"
+                />
+                <ThemedTextInput
+                  onChangeText={(data) => setPassword(data)}
+                  value={password}
+                  placeholder="Password"
+                  autoComplete="off"
+                  secureTextEntry={true}
+                  passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
+                />
+                <View style={{ marginBottom: 10 }}>
+                  <Button
+                    title="Submit"
+                    onPress={(data: any) => handleSubmit(data)}
+                  />
+                </View>
+                <View style={{ marginBottom: 10 }}>
+                  <Button
+                    title="Close Modal"
+                    onPress={() =>
+                      setCreateUserModalVisible(!createUserModalVisible)
+                    }
+                  />
+                </View>
+              </SafeAreaView>
+            </SafeAreaProvider>
+          </ThemedView>
         </Modal>
-      </ThemedView>
-    </ParallaxScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  card: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
+    borderRadius: 10,
     padding: 10,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 2,
+  },
+  infoContainer: {
+    justifyContent: 'center',
   },
 });

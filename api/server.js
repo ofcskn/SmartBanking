@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 
 const PORT = process.env.PORT || 5000;
+const API_LOCALHOST = process.env.API_LOCALHOST || '0.0.0.0';
+
 const app = express();
 
 dotenv.config();
@@ -25,4 +27,6 @@ mongoose
 // Use the user routes
 app.use('/api/users', userRoutes); // All user routes will be prefixed with /api/users
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, API_LOCALHOST, () =>
+  console.log(`Server running on port ${PORT}`)
+);
