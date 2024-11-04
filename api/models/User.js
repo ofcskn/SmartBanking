@@ -13,9 +13,6 @@ const userSchema = new mongoose.Schema({
   },
   walletAddress: {
     type: String,
-    // The wallet address is not required. If users want to connect, they can.
-    required: false,
-    unique: true,
   },
   password: {
     type: String,

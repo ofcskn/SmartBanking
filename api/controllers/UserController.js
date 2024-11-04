@@ -21,14 +21,25 @@ exports.getUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   const user = new User(req.body);
+  console.log(req.body);
   try {
     // Hash the password
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
     const savedUser = await user.save(); // Save the new user
+    console.log(savedUser);
+
     res.status(201).json(savedUser);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    if (err.code === 11000) {
+      res.status(400).json({ error: 'Duplicate items' });
+    } else if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map((e) => e.message);
+      res.status(400).json({ errors });
+    } else {
+      console.log(err);
+      res.status(500).json({ err: 'Internal Server Error' });
+    }
   }
 };
 
