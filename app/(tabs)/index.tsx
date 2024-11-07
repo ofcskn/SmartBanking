@@ -37,15 +37,21 @@ export default function HomeScreen() {
           </>
         )}
       </ThemedView>
-      <ThemedView>
-        <Button
-          title="Sign out"
-          onPress={() => {
-            //sign out
-            signOut();
-          }}
-        ></Button>
-      </ThemedView>
+      {user && session ? (
+        <>
+          <ThemedView>
+            <Button
+              title="Sign out"
+              onPress={() => {
+                //sign out
+                signOut();
+              }}
+            ></Button>
+          </ThemedView>
+        </>
+      ) : (
+        <></>
+      )}
     </ParallaxScrollView>
   );
 }

@@ -39,7 +39,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
   const [signedUser, setSignedUser] = useState<User>();
 
-  console.log(session, isLoading);
   if (session != null && signedUser == null) {
     axios
       .get(`${config.apiUrl}/users/verify`, {

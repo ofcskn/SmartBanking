@@ -6,6 +6,7 @@ import { useSession } from '../ctx';
 
 export default function LoginScreen() {
   const { user } = useSession();
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ margin: 20 }}>
