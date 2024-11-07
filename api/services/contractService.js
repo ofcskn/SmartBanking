@@ -7,6 +7,7 @@ dotenv.config();
 
 // Smart contract details
 const contractAddress = process.env.API_CONTRACT_ADDRESS;
+
 const contractABI = [
   {
     anonymous: false,
@@ -88,6 +89,15 @@ class ContractService {
     // Connect to Ethereum node
     this.web3 = new Web3('http://127.0.0.1:7545');
     this.contract = new this.web3.eth.Contract(contractABI, contractAddress);
+  }
+
+  // Get accounts
+  async getAccounts() {
+    let accounts;
+    await this.web3.eth.getAccounts().then((acc) => {
+      accounts = acc;
+    });
+    return accounts;
   }
 
   async getBalance(address) {

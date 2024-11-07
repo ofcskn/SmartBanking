@@ -3,12 +3,10 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const contractService = require('../services/contractService');
 
 // Configuration for environment variables
 dotenv.config();
-
-// Services
-const contractService = require('../services/contractService');
 
 exports.getUsers = async (req, res) => {
   try {
@@ -40,6 +38,27 @@ exports.createUser = async (req, res) => {
       console.log(err);
       res.status(500).json({ err: 'Internal Server Error' });
     }
+  }
+};
+
+// Function to get user balance
+exports.getUserWithBalance = async (req, res) => {
+  const userId = req.params._id; // Get user ID from URL params
+  try {
+    const user = await User.findById(userId); // Fetch user from MongoDB
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    if (user.walletAddress) {
+      const balance = await contractService.getBalance(user.walletAddress); // Get balance using Web3
+      return res.status(200).json({
+        user,
+        balance,
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching user balance:', error);
+    res.status(500).json({ error: 'Failed to retrieve user balance' });
   }
 };
 
@@ -96,26 +115,5 @@ exports.saveWallet = async (req, res) => {
   } catch (error) {
     console.error('Error saving wallet address:', error);
     res.status(500).json({ error: 'Failed to save wallet address' });
-  }
-};
-
-// Function to get user balance
-exports.getUserWithBalance = async (req, res) => {
-  const userId = req.params._id; // Get user ID from URL params
-  try {
-    const user = await User.findById(userId); // Fetch user from MongoDB
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    if (user.walletAddress) {
-      const balance = await contractService.getBalance(user.walletAddress); // Get balance using Web3
-      return res.status(200).json({
-        user,
-        balance,
-      });
-    }
-  } catch (error) {
-    console.error('Error fetching user balance:', error);
-    res.status(500).json({ error: 'Failed to retrieve user balance' });
   }
 };

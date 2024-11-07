@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 
 const userRoutes = require('./routes/userRoutes');
+const bankingRoutes = require('./routes/bankingRoutes');
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ mongoose
 
 // Use the user routes
 app.use('/api/users', userRoutes); // All user routes will be prefixed with /api/users
+app.use('/api/banking', bankingRoutes); // All user routes will be prefixed with /api/users
 
 app.listen(PORT, API_LOCALHOST, () =>
   console.log(`Server running on port ${PORT}`)
