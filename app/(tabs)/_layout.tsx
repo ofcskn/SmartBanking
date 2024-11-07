@@ -10,7 +10,7 @@ import { ThemedText } from '@/components/ThemedText';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { session, isLoading } = useSession();
+  const { user, isLoading } = useSession();
 
   if (isLoading == true) {
     return <ThemedText>Loading...</ThemedText>;
@@ -53,7 +53,7 @@ export default function TabLayout() {
         name="login"
         options={{
           title: 'Login',
-          href: !session ? '/(tabs)/login' : null,
+          href: !user ? '/(tabs)/login' : null,
           tabBarIcon: ({ color, focused }) => (
             <FontAwesome5
               size={24}
@@ -67,7 +67,7 @@ export default function TabLayout() {
         name="account"
         options={{
           title: 'Account',
-          href: session ? '/(tabs)/account' : null,
+          href: user ? '/(tabs)/account' : null,
           tabBarIcon: ({ color, focused }) => (
             <FontAwesome5
               size={24}
