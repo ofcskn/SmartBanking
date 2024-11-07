@@ -29,3 +29,31 @@ exports.getAccounts = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Example Node.js endpoint
+exports.deposit = async (req, res) => {
+  const { userId, toAddress, amountInWei, senderPrivateKey } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    console.log(amountInWei);
+    const receipt = await contractService.depositWei(
+      user.walletAddress,
+      toAddress,
+      amountInWei,
+      senderPrivateKey
+    );
+    console.log('Receipt: ', receipt);
+    res.status(200).json({
+      success: true,
+      message: 'Deposit successful',
+      transactionHash: receipt.transactionHash,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Deposit failed',
+      error: error.message,
+    });
+  }
+};

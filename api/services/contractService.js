@@ -109,6 +109,45 @@ class ContractService {
       throw new Error('Failed to fetch balance: ' + error.message);
     }
   }
+  // deposit
+  async depositWei(
+    senderAddress,
+    recipientAddress,
+    amountInWei,
+    senderPrivateKey
+  ) {
+    try {
+      // Create the transaction object
+      const transaction = {
+        to: recipientAddress,
+        value: amountInWei,
+        gas: 21000, // standard gas limit for ether transfer
+        gasPrice: await this.web3.eth.getGasPrice(),
+      };
+
+      // Get the nonce
+      transaction.nonce = await this.web3.eth.getTransactionCount(
+        senderAddress,
+        'latest'
+      );
+
+      // Sign the transaction
+      const signedTransaction = await this.web3.eth.accounts.signTransaction(
+        transaction,
+        senderPrivateKey
+      );
+
+      // Send the signed transaction
+      const receipt = await this.web3.eth.sendSignedTransaction(
+        signedTransaction.rawTransaction
+      );
+      console.log('Transaction successful with hash:', receipt.transactionHash);
+      return receipt;
+    } catch (error) {
+      console.error('Error while sending transaction:', error);
+      throw error;
+    }
+  }
 }
 
 const contractService = new ContractService();
