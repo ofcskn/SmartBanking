@@ -2,12 +2,20 @@
 pragma solidity ^0.8.0;
 
 contract SecureBanking {
+    address public owner;
+
     // Mapping to keep track of user balances
     mapping(address => uint256) private balances;
 
     // Event declarations for logging actions
     event Deposited(address indexed user, uint256 amount);
     event Withdrawn(address indexed user, uint256 amount);
+
+    constructor() payable {
+        require(msg.value > 0, "Initial deposit must be greater than zero.");
+        owner = msg.sender;
+        emit Deposited(msg.sender, msg.value); // Emit event for initial deposit
+    }
 
     // Function to deposit funds into the bank
     function deposit() public payable {
@@ -29,4 +37,7 @@ contract SecureBanking {
     function getBalance() public view returns (uint256) {
         return balances[msg.sender];
     }
+
+    // Function to deposit ether to the contract
+    receive() external payable {}
 }

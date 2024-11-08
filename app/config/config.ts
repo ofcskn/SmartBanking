@@ -10,7 +10,7 @@ type EnvironmentConfig = {
 
 const config: EnvironmentConfig = {
   development: {
-    apiUrl: process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:5000/api',
+    apiUrl: process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.111:5000/api',
   },
   production: {
     apiUrl: 'https://api.example.com',

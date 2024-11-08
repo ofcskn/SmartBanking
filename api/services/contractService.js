@@ -135,23 +135,22 @@ class ContractService {
 
   async withdraw(address, privateKey, amountEth) {
     try {
+      const gasPrice = await this.web3.eth.getGasPrice(); // Get the current gas price
+      const amountInWei = this.web3.utils.toWei(amountEth, 'ether');
       // Specify withdraw transaction details
       const transaction = {
         from: address,
-        gas: 500000, // Increase gas limit
-        gasPrice: '200000000000', // Optionally specify gas price
-        data: this.contract.methods
-          .withdraw(this.web3.utils.toWei(amountEth.toString(), 'ether'))
-          .encodeABI(), // Encoded ABI for withdraw function
+        to: contractAddress,
+        gas: 53264, // Increase gas limit
+        gasPrice: gasPrice,
+        data: this.contract.methods.withdraw(amountInWei).encodeABI(), // Encoded ABI for withdraw function
       };
 
-      // Get the contract balance and user balance
-      const user = await this.contract.methods
-        .getBalance()
-        .call({ from: address });
-      const contractBalance = await this.contract.methods.getBalance().call();
-      console.log('User balance:', userBalance);
-      console.log('Contract balance:', contractBalance);
+      // Ensure the contract has enough balance
+      const contractBalance = await this.web3.eth.getBalance(contractAddress);
+      if (parseInt(contractBalance) < parseInt(amountInWei)) {
+        return res.status(400).json({ error: 'Insufficient contract balance' });
+      }
 
       // Sign the transaction with the private key
       const signedTransaction = await this.web3.eth.accounts.signTransaction(
