@@ -14,7 +14,7 @@ export function ThemedTextInput({
   ...rest
 }: ThemedTextInputProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
+  console.log(color);
   return (
     <TextInput
       style={[{ color: color, borderColor: color }, styles.input, style]}

@@ -15,37 +15,39 @@ export default function LoginScreen() {
   // }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ margin: 20 }}>
-        <ThemedTextInput
-          onChangeText={(data) => setEmail(data)}
-          value={email}
-          placeholder="Email"
-        />
-
-        <ThemedTextInput
-          onChangeText={(data) => setPassword(data)}
-          value={password}
-          placeholder="Password"
-          autoComplete="off"
-          secureTextEntry={true}
-          passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
-        />
-        <ThemedView style={{ marginBottom: 10 }}>
-          <Button
-            title="Login"
-            onPress={() => {
-              //sign in
-              signIn(email, password);
-
-              // Clear data
-              setEmail('');
-              setPassword('');
-            }}
+    <ThemedView style={{ height: '100%' }}>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ margin: 20 }}>
+          <ThemedTextInput
+            onChangeText={(data) => setEmail(data)}
+            value={email}
+            placeholder="Email"
           />
-        </ThemedView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+
+          <ThemedTextInput
+            onChangeText={(data) => setPassword(data)}
+            value={password}
+            placeholder="Password"
+            autoComplete="off"
+            secureTextEntry={true}
+            passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
+          />
+          <ThemedView style={{ marginBottom: 10 }}>
+            <Button
+              title="Login"
+              onPress={() => {
+                //sign in
+                signIn(email, password);
+
+                // Clear data
+                setEmail('');
+                setPassword('');
+              }}
+            />
+          </ThemedView>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </ThemedView>
   );
 }
 

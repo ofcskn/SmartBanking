@@ -51,92 +51,94 @@ export default function UsersScreen() {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ margin: 20 }}>
-        <FlatList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          data={data}
-          renderItem={({ item }) => (
-            <ThemedView style={styles.card}>
-              <View style={styles.infoContainer}>
-                <ThemedText type="subtitle">{item.name}</ThemedText>
-                <ThemedText>{item.email}</ThemedText>
-                <ThemedText style={{ fontSize: 14 }} type="link">
-                  {item.walletAddress}
-                </ThemedText>
-              </View>
-            </ThemedView>
-          )}
-          keyExtractor={(item) => item._id}
-        />
-        <ThemedView style={{ marginTop: 10 }}>
-          <Button
-            title="Create a User"
-            onPress={() => setCreateUserModalVisible(true)}
-            accessibilityLabel="Create a user that has access the banking system"
+    <ThemedView style={{ height: '100%' }}>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ margin: 20 }}>
+          <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            data={data}
+            renderItem={({ item }) => (
+              <ThemedView style={styles.card}>
+                <View style={styles.infoContainer}>
+                  <ThemedText type="subtitle">{item.name}</ThemedText>
+                  <ThemedText>{item.email}</ThemedText>
+                  <ThemedText style={{ fontSize: 14 }} type="link">
+                    {item.walletAddress}
+                  </ThemedText>
+                </View>
+              </ThemedView>
+            )}
+            keyExtractor={(item) => item._id}
           />
-        </ThemedView>
-
-        <Modal
-          animationType="slide"
-          presentationStyle="pageSheet"
-          transparent={false}
-          visible={createUserModalVisible}
-          onRequestClose={() => {
-            setCreateUserModalVisible(!createUserModalVisible);
-          }}
-        >
-          <ThemedView style={{ height: '100%' }}>
-            <SafeAreaProvider>
-              <SafeAreaView style={{ margin: 20 }}>
-                <ThemedText type="title" style={{ marginBottom: 20 }}>
-                  Create User
-                </ThemedText>
-                <ThemedTextInput
-                  onChangeText={(data) => setName(data)}
-                  value={name}
-                  placeholder="Name"
-                ></ThemedTextInput>
-                <ThemedTextInput
-                  onChangeText={(data) => setEmail(data)}
-                  value={email}
-                  placeholder="Email"
-                />
-                <ThemedTextInput
-                  onChangeText={(data) => setWalletAddress(data)}
-                  value={walletAddress}
-                  placeholder="Wallet Adress (0x..)"
-                />
-                <ThemedTextInput
-                  onChangeText={(data) => setPassword(data)}
-                  value={password}
-                  placeholder="Password"
-                  autoComplete="off"
-                  secureTextEntry={true}
-                  passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
-                />
-                <View style={{ marginBottom: 10 }}>
-                  <Button
-                    title="Submit"
-                    onPress={(data: any) => handleSubmit(data)}
-                  />
-                </View>
-                <View style={{ marginBottom: 10 }}>
-                  <Button
-                    title="Close Modal"
-                    onPress={() =>
-                      setCreateUserModalVisible(!createUserModalVisible)
-                    }
-                  />
-                </View>
-              </SafeAreaView>
-            </SafeAreaProvider>
+          <ThemedView style={{ marginTop: 10 }}>
+            <Button
+              title="Create a User"
+              onPress={() => setCreateUserModalVisible(true)}
+              accessibilityLabel="Create a user that has access the banking system"
+            />
           </ThemedView>
-        </Modal>
-      </SafeAreaView>
-    </SafeAreaProvider>
+
+          <Modal
+            animationType="slide"
+            presentationStyle="pageSheet"
+            transparent={false}
+            visible={createUserModalVisible}
+            onRequestClose={() => {
+              setCreateUserModalVisible(!createUserModalVisible);
+            }}
+          >
+            <ThemedView style={{ height: '100%' }}>
+              <SafeAreaProvider>
+                <SafeAreaView style={{ margin: 20 }}>
+                  <ThemedText type="title" style={{ marginBottom: 20 }}>
+                    Create User
+                  </ThemedText>
+                  <ThemedTextInput
+                    onChangeText={(data) => setName(data)}
+                    value={name}
+                    placeholder="Name"
+                  ></ThemedTextInput>
+                  <ThemedTextInput
+                    onChangeText={(data) => setEmail(data)}
+                    value={email}
+                    placeholder="Email"
+                  />
+                  <ThemedTextInput
+                    onChangeText={(data) => setWalletAddress(data)}
+                    value={walletAddress}
+                    placeholder="Wallet Adress (0x..)"
+                  />
+                  <ThemedTextInput
+                    onChangeText={(data) => setPassword(data)}
+                    value={password}
+                    placeholder="Password"
+                    autoComplete="off"
+                    secureTextEntry={true}
+                    passwordRules="required: upper; required: lower; required: digit; minlength: 8;" // Example rules
+                  />
+                  <View style={{ marginBottom: 10 }}>
+                    <Button
+                      title="Submit"
+                      onPress={(data: any) => handleSubmit(data)}
+                    />
+                  </View>
+                  <View style={{ marginBottom: 10 }}>
+                    <Button
+                      title="Close Modal"
+                      onPress={() =>
+                        setCreateUserModalVisible(!createUserModalVisible)
+                      }
+                    />
+                  </View>
+                </SafeAreaView>
+              </SafeAreaProvider>
+            </ThemedView>
+          </Modal>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </ThemedView>
   );
 }
 
