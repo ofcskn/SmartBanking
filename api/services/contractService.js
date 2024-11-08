@@ -100,17 +100,42 @@ class ContractService {
     return accounts;
   }
 
+  // get the balance of the user from the SecureBank.sol contract
   async getBalance(address) {
     try {
-      const balance = await this.web3.eth.getBalance(address);
+      const balance = await this.contract.methods
+        .getBalance()
+        .call({ from: address });
       // Return ETH balance
       return this.web3.utils.fromWei(balance, 'ether');
     } catch (error) {
       throw new Error('Failed to fetch balance: ' + error.message);
     }
   }
+
   // deposit
-  async depositWei(
+  async deposit(address, amount) {
+    try {
+      // Specify deposit transaction details
+      const transaction = {
+        from: address,
+        to: contractAddress,
+        value: this.web3.utils.toWei(amount.toString(), 'ether'), // Convert ETH to Wei
+        gas: 3000000, // Gas limit, adjust as needed
+      };
+
+      // Call the deposit function
+      const result = await this.contract.methods.deposit().send(transaction);
+      console.log('Deposit is successful!', result);
+      return this.getBalance(address);
+    } catch (error) {
+      throw new Error('Failed: ' + error.message);
+    }
+  }
+
+  
+  // transfer
+  async transferWei(
     senderAddress,
     recipientAddress,
     amountInWei,

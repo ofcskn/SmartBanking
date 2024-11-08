@@ -9,9 +9,12 @@ const contractService = require('../services/contractService');
 dotenv.config();
 
 exports.getBalance = async (req, res) => {
-  const { address } = req.body;
+  const { userId } = req.body;
 
   try {
+    const user = await User.findById(userId);
+    const address = user.walletAddress;
+
     const balance = await contractService.getBalance(address);
     res.json({ address, balance });
   } catch (error) {
@@ -21,7 +24,6 @@ exports.getBalance = async (req, res) => {
 };
 
 exports.getAccounts = async (req, res) => {
-  console.log('selam');
   try {
     const accounts = await contractService.getAccounts(); // Fetch all users from the database
     res.json(accounts);
@@ -30,14 +32,13 @@ exports.getAccounts = async (req, res) => {
   }
 };
 
-// Example Node.js endpoint
-exports.deposit = async (req, res) => {
+// Transfer money to the other ETH address
+exports.transfer = async (req, res) => {
   const { userId, toAddress, amountInWei, senderPrivateKey } = req.body;
 
   try {
     const user = await User.findById(userId);
-    console.log(amountInWei);
-    const receipt = await contractService.depositWei(
+    const receipt = await contractService.transferWei(
       user.walletAddress,
       toAddress,
       amountInWei,
@@ -55,5 +56,20 @@ exports.deposit = async (req, res) => {
       message: 'Deposit failed',
       error: error.message,
     });
+  }
+};
+
+// Deposit ETH to the bank
+exports.deposit = async (req, res) => {
+  const { userId, amount } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    const userAddress = user.walletAddress;
+    const balance = await contractService.deposit(userAddress, amount);
+    res.json({ userAddress, balance });
+  } catch (error) {
+    console.error('Error fetching balance:', error);
+    res.status(500).json({ error: 'Could not fetch balance' });
   }
 };
