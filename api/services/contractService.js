@@ -133,7 +133,44 @@ class ContractService {
     }
   }
 
-  
+  async withdraw(address, privateKey, amountEth) {
+    try {
+      // Specify withdraw transaction details
+      const transaction = {
+        from: address,
+        gas: 500000, // Increase gas limit
+        gasPrice: '200000000000', // Optionally specify gas price
+        data: this.contract.methods
+          .withdraw(this.web3.utils.toWei(amountEth.toString(), 'ether'))
+          .encodeABI(), // Encoded ABI for withdraw function
+      };
+
+      // Get the contract balance and user balance
+      const user = await this.contract.methods
+        .getBalance()
+        .call({ from: address });
+      const contractBalance = await this.contract.methods.getBalance().call();
+      console.log('User balance:', userBalance);
+      console.log('Contract balance:', contractBalance);
+
+      // Sign the transaction with the private key
+      const signedTransaction = await this.web3.eth.accounts.signTransaction(
+        transaction,
+        privateKey
+      );
+
+      // Send the signed transaction
+      const result = await this.web3.eth.sendSignedTransaction(
+        signedTransaction.rawTransaction
+      );
+
+      console.log('Withdraw is successful!', result);
+      return this.getBalance(address);
+    } catch (error) {
+      throw new Error('Failed: ' + error.message);
+    }
+  }
+
   // transfer
   async transferWei(
     senderAddress,

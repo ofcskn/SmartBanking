@@ -9,5 +9,6 @@ router.get('/accounts', BankingController.getAccounts); // GET /api/banking/acco
 
 // Deposit to the bank
 router.post('/deposit', BankingController.deposit); // POST / api/banking/deposit
+router.post('/withdraw', BankingController.withdraw); // POST / api/banking/withdraw
 
 module.exports = router; // Export the router
