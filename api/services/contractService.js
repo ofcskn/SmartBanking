@@ -10,6 +10,12 @@ const contractAddress = process.env.API_CONTRACT_ADDRESS;
 
 const contractABI = [
   {
+    inputs: [],
+    stateMutability: 'payable',
+    type: 'constructor',
+    payable: true,
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -46,6 +52,25 @@ const contractABI = [
     ],
     name: 'Withdrawn',
     type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+    constant: true,
+  },
+  {
+    stateMutability: 'payable',
+    type: 'receive',
+    payable: true,
   },
   {
     inputs: [],
