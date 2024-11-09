@@ -3,6 +3,7 @@ import {
   createContext,
   type PropsWithChildren,
   useState,
+  useEffect,
 } from 'react';
 import { useStorageState } from '../hooks/useStorageState';
 import axios, { AxiosHeaders } from 'axios';
@@ -39,18 +40,20 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
   const [signedUser, setSignedUser] = useState<User>();
 
-  if (session != null && signedUser == null) {
-    axios
-      .get(`${config.apiUrl}/users/verify`, {
-        headers: new AxiosHeaders('authorization: ' + session),
-      })
-      .then((res) => {
-        setSignedUser(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  useEffect(() => {
+    if ((session != null && signedUser == null) || undefined) {
+      axios
+        .get(`${config.apiUrl}/users/verify`, {
+          headers: new AxiosHeaders('authorization: ' + session),
+        })
+        .then((res) => {
+          setSignedUser(res.data);
+        })
+        .catch((err) => {
+          console.error('Verifying error: ', err);
+        });
+    }
+  }, [session]);
 
   return (
     <AuthContext.Provider

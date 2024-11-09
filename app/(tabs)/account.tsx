@@ -4,9 +4,28 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSession } from '../ctx';
 import { AppKitButton } from '@reown/appkit-ethers-react-native';
+import { useAppKitAccount } from '@reown/appkit-ethers-react-native';
+import axios, { AxiosHeaders } from 'axios';
 
 export default function LoginScreen() {
-  const { user } = useSession();
+  const { address, chainId, isConnected } = useAppKitAccount();
+  const { user, session } = useSession();
+
+  if (isConnected && user) {
+    async () => {
+      await axios
+        .post(`${process.env.EXPO_PUBLIC_API_URL}/users/saveWallet`, {
+          headers: new AxiosHeaders('authorization: ' + session),
+          address: address,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          throw Error('The wallet cannot be saved.');
+        });
+    };
+  }
   return (
     <ThemedView style={{ height: '100%' }}>
       <SafeAreaProvider>
@@ -14,17 +33,8 @@ export default function LoginScreen() {
           <ThemedText type="title">ACCOUNT</ThemedText>
           <ThemedText>Name: {user?.name}</ThemedText>
           <ThemedText>Email: {user?.email}</ThemedText>
-          <ThemedText>
-            Wallet Address:{' '}
-            {user?.walletAddress ? (
-              user?.walletAddress
-            ) : (
-              <>
-                <ThemedText type="link">Create a wallet</ThemedText>
-              </>
-            )}
-          </ThemedText>
-          <AppKitButton size={'sm'}></AppKitButton>
+          <ThemedText>Wallet Address: {user?.walletAddress}</ThemedText>
+          <AppKitButton></AppKitButton>
         </SafeAreaView>
       </SafeAreaProvider>
     </ThemedView>

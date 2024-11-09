@@ -98,22 +98,25 @@ exports.verifyToken = async (req, res, next) => {
 
 // save wallet
 exports.saveWallet = async (req, res) => {
-  const { address, _id } = req.params;
+  const { address } = req.body;
+  // verify token to save the wallet
+  const token = await req.headers['authorization'];
+  if (!token) return res.status(403).json({ message: 'No token provided' });
+  await jwt.verify(token, process.env.API_JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      return res.status(500).json({ message: 'Failed to authenticate token' });
+    } else {
+      const user = await User.findOne({ _id: decoded.userId });
+      if (user) {
+        user.walletAddress = address;
+        await user.save();
+        return res
+          .status(201)
+          .json({ message: 'Wallet address saved successfully', user });
+      }
 
-  try {
-    let user = await User.findOne({ _id: _id });
-
-    if (user) {
-      user.walletAddress = address;
-      await user.save();
-      return res
-        .status(201)
-        .json({ message: 'Wallet address saved successfully', user });
+      res.status(200).json({ message: 'Wallet address already exists', user });
+      return res.status(200).json(user);
     }
-
-    res.status(200).json({ message: 'Wallet address already exists', user });
-  } catch (error) {
-    console.error('Error saving wallet address:', error);
-    res.status(500).json({ error: 'Failed to save wallet address' });
-  }
+  });
 };
