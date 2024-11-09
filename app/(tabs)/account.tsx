@@ -3,6 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSession } from '../ctx';
+import { AppKitButton } from '@reown/appkit-ethers-react-native';
 
 export default function LoginScreen() {
   const { user } = useSession();
@@ -27,6 +28,7 @@ export default function LoginScreen() {
           <ThemedText>
             Balance: {user?.balance == null ? '0' : user?.balance} ETH
           </ThemedText>
+          <AppKitButton />
         </SafeAreaView>
       </SafeAreaProvider>
     </ThemedView>
