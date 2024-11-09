@@ -7,7 +7,6 @@ import { AppKitButton } from '@reown/appkit-ethers-react-native';
 
 export default function LoginScreen() {
   const { user } = useSession();
-
   return (
     <ThemedView style={{ height: '100%' }}>
       <SafeAreaProvider>
@@ -25,10 +24,7 @@ export default function LoginScreen() {
               </>
             )}
           </ThemedText>
-          <ThemedText>
-            Balance: {user?.balance == null ? '0' : user?.balance} ETH
-          </ThemedText>
-          <AppKitButton />
+          <AppKitButton size={'sm'}></AppKitButton>
         </SafeAreaView>
       </SafeAreaProvider>
     </ThemedView>

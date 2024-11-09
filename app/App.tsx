@@ -1,22 +1,16 @@
-import './crypto-polyfill.js';
+import './crypto-polyfill';
 import '@walletconnect/react-native-compat';
 
 import React from 'react';
 import RootLayout from './_layout';
 
-import {
-  createAppKit,
-  defaultConfig,
-  AppKit,
-} from '@reown/appkit-ethers-react-native';
+import { createAppKit, defaultConfig } from '@reown/appkit-ethers-react-native';
 
-// 1. Get projectId from https://cloud.reown.com
-const projectId = 'projectid';
+const projectId = process.env.EXPO_PUBLIC_WALLETCONNECTION_ID || '';
 
-// 2. Create config
 const metadata = {
-  name: 'AppKit RN',
-  description: 'AppKit RN Example',
+  name: 'SecureBanking',
+  description: 'Secure Banking is a banking application.',
   url: 'https://reown.com/appkit',
   icons: ['https://avatars.githubusercontent.com/u/179229932'],
   redirect: {
@@ -26,7 +20,6 @@ const metadata = {
 
 const config = defaultConfig({ metadata });
 
-// 3. Define your chains
 const mainnet = {
   chainId: 1,
   name: 'Ethereum',
@@ -45,7 +38,6 @@ const polygon = {
 
 const chains = [mainnet, polygon];
 
-// 4. Create modal
 createAppKit({
   projectId,
   chains,
@@ -56,7 +48,6 @@ export default function App() {
   return (
     <>
       <RootLayout />
-      <AppKit />
     </>
   );
 }
