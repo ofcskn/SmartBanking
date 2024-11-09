@@ -3,13 +3,17 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSession } from '../ctx';
-import { AppKitButton } from '@reown/appkit-ethers-react-native';
+import {
+  AppKitButton,
+  useAppKitProvider,
+} from '@reown/appkit-ethers-react-native';
 import { useAppKitAccount } from '@reown/appkit-ethers-react-native';
 import axios, { AxiosHeaders } from 'axios';
 
 export default function LoginScreen() {
   const { address, chainId, isConnected } = useAppKitAccount();
   const { user, session } = useSession();
+  const { walletProvider } = useAppKitProvider();
 
   if (isConnected && user) {
     async () => {
@@ -34,7 +38,11 @@ export default function LoginScreen() {
           <ThemedText>Name: {user?.name}</ThemedText>
           <ThemedText>Email: {user?.email}</ThemedText>
           <ThemedText>Wallet Address: {user?.walletAddress}</ThemedText>
-          <AppKitButton></AppKitButton>
+          <ThemedText>Chain Id: {chainId}</ThemedText>
+          <AppKitButton
+            label="Connect Your Wallet"
+            balance="show"
+          ></AppKitButton>
         </SafeAreaView>
       </SafeAreaProvider>
     </ThemedView>
