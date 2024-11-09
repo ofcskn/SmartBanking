@@ -4,6 +4,8 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useSession } from '../ctx';
+import { ThemedButton } from '@/components/ThemedButton';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   const { user, session, signOut } = useSession();
@@ -39,15 +41,24 @@ export default function HomeScreen() {
       </ThemedView>
       {user && session ? (
         <>
-          <ThemedView>
-            <Button
-              title="Sign out"
-              onPress={() => {
-                //sign out
-                signOut();
-              }}
-            ></Button>
-          </ThemedView>
+          <ThemedButton
+            title="Tranfser Money"
+            onPress={() => {
+              router.push('/(tabs)/account');
+            }}
+          />
+          <ThemedButton
+            title="Deposit"
+            onPress={() => {
+              router.push('/(tabs)/account');
+            }}
+          />
+          <ThemedButton
+            title="Sign out"
+            onPress={() => {
+              signOut();
+            }}
+          />
         </>
       ) : (
         <></>
