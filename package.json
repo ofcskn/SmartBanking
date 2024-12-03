@@ -25,7 +25,7 @@
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "ethers": "^6.13.4",
-    "expo": "~51.0.28",
+    "expo": "^52.0.14",
     "expo-application": "~5.9.1",
     "expo-constants": "~16.0.2",
     "expo-crypto": "~13.0.2",
