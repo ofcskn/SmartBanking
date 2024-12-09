@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, type ButtonProps, StyleSheet, View } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedView } from './ThemedView';
-import { ColorProperties } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 export type ThemedButtonProps = ButtonProps & {
   lightColor?: string;
