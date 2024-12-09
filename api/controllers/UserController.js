@@ -67,9 +67,7 @@ exports.login = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    console.log(user);
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+      if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     const token = jwt.sign({ userId: user._id }, process.env.API_JWT_SECRET, {
