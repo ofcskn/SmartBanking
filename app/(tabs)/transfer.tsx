@@ -14,30 +14,34 @@ import { useState } from 'react';
 import { ThemedButton } from '@/components/ThemedButton';
 import { BrowserProvider } from 'ethers';
 
-export default function DepositScreen() {
+export default function TransferScreen() {
   const { address, isConnected } = useAppKitAccount();
   const { user, session } = useSession();
   const [amount, setAmount] = useState('');
+  const [toAddress, setToAddress] = useState(
+    process.env.EXPO_PUBLIC_BLOCKCHAIN_EXAMPLE_ADDRESS || ''
+  );
   const { walletProvider } = useAppKitProvider();
 
-  const deposit = async () => {
-    if (walletProvider != undefined && user && isConnected) {
+  const transfer = async () => {
+    if (walletProvider != undefined && user && session && isConnected) {
       if (parseInt(amount) > 0) {
         const ethersProvider = new BrowserProvider(walletProvider);
         const signer = await ethersProvider.getSigner();
-        const message = `${address} is depositing ${amount} ETH to The Secure Bank!`;
+        const message = `${address} is transfering ${amount} ETH to ${toAddress}!`;
         const signature = await signer.signMessage(message);
 
         // deposit to the bank your eth
         await axios
-          .post(`${process.env.EXPO_PUBLIC_API_URL}/banking/deposit`, {
-            publicAddress: address,
-            amountEth: amount,
+          .post(`${process.env.EXPO_PUBLIC_API_URL}/banking/transfer`, {
+            fromAddress: address,
+            toAddress: toAddress,
+            amountInEth: amount,
             signature: signature,
           })
           .then((response) => {
             setAmount('');
-            Alert.alert('Successful!', 'You deposited successfully!.', [
+            Alert.alert('Successful!', 'You transfered successfully!.', [
               { text: 'Ok!' },
             ]);
           })
@@ -51,7 +55,6 @@ export default function DepositScreen() {
       throw Error('Please connect to the application.');
     }
   };
-
   return (
     <ThemedView style={{ height: '100%' }}>
       <SafeAreaProvider>
@@ -61,6 +64,12 @@ export default function DepositScreen() {
             label="Connect Your Wallet to Deposit"
             balance="show"
           ></AppKitButton>
+          <ThemedText type="default">To Address</ThemedText>
+          <ThemedTextInput
+            onChangeText={(data) => setToAddress(data)}
+            value={toAddress.toString()}
+            placeholder="To Address (0x)"
+          />
           <ThemedText type="default">Amount (ETH)</ThemedText>
           <ThemedTextInput
             onChangeText={(data) => setAmount(data)}
@@ -72,9 +81,9 @@ export default function DepositScreen() {
           <ThemedTextInput value="The Bank" readOnly />
           <ThemedText type="default"></ThemedText>
           <ThemedButton
-            title="Sign and Deposit"
+            title="Sign and Transfer"
             onPress={() => {
-              deposit();
+              transfer();
             }}
           />
         </SafeAreaView>

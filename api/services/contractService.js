@@ -213,38 +213,37 @@ class ContractService {
   }
 
   // transfer
-  async transferWei(
-    senderAddress,
-    recipientAddress,
-    amountInWei,
-    senderPrivateKey
-  ) {
+  async transferEth(fromAddress, toAddress, amountInEther, signature) {
     try {
+      const amountInWei = this.web3.utils.toWei(amountInEther, 'ether');
+      console.log(amountInWei);
       // Create the transaction object
       const transaction = {
-        to: recipientAddress,
+        from: fromAddress,
+        to: toAddress,
         value: amountInWei,
-        gas: 21000, // standard gas limit for ether transfer
-        gasPrice: await this.web3.eth.getGasPrice(),
       };
+
+      const message = `${fromAddress} is transfering ${amountInEther} ETH to ${toAddress}!`;
+      const recoveredAddress = this.web3.eth.accounts.recover(
+        message,
+        signature
+      );
+
+      // Ensure the recovered address matches the sender's address
+      if (recoveredAddress.toLowerCase() !== fromAddress.toLowerCase()) {
+        return res.status(400).send({ error: 'Signature verification failed' });
+      }
 
       // Get the nonce
       transaction.nonce = await this.web3.eth.getTransactionCount(
-        senderAddress,
+        fromAddress,
         'latest'
       );
 
-      // Sign the transaction
-      const signedTransaction = await this.web3.eth.accounts.signTransaction(
-        transaction,
-        senderPrivateKey
-      );
-
       // Send the signed transaction
-      const receipt = await this.web3.eth.sendSignedTransaction(
-        signedTransaction.rawTransaction
-      );
-      console.log('Transaction successful with hash:', receipt.transactionHash);
+      const receipt = await this.web3.eth.sendTransaction(transaction);
+      console.log('Transaction successful with hash:', receipt);
       return receipt;
     } catch (error) {
       console.error('Error while sending transaction:', error);

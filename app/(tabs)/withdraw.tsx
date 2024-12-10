@@ -21,7 +21,7 @@ export default function WithdrawScreen() {
   const { walletProvider } = useAppKitProvider();
 
   const withdraw = async () => {
-    if (walletProvider != undefined && user && isConnected) {
+    if (walletProvider != undefined && user && session && isConnected) {
       if (parseInt(amount) > 0) {
         const ethersProvider = new BrowserProvider(walletProvider);
         const signer = await ethersProvider.getSigner();

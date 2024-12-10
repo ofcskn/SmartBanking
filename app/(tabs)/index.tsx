@@ -35,9 +35,9 @@ export default function HomeScreen() {
       {user && session ? (
         <>
           <ThemedButton
-            title="Tranfser Money"
+            title="Transfer Money"
             onPress={() => {
-              router.push('/(tabs)/account');
+              router.push('/(tabs)/transfer');
             }}
           />
           <ThemedButton

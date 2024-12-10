@@ -31,24 +31,24 @@ exports.getAccounts = async (req, res) => {
 
 // Transfer money to the other ETH address
 exports.transfer = async (req, res) => {
-  const { fromAddress, toAddress, amountInWei, senderPrivateKey } = req.body;
+  const { fromAddress, toAddress, amountInEth, signature } = req.body;
 
   try {
-    const receipt = await contractService.transferWei(
+    const receipt = await contractService.transferEth(
       fromAddress,
       toAddress,
-      amountInWei,
-      senderPrivateKey
+      amountInEth,
+      signature
     );
     res.status(200).json({
       success: true,
-      message: 'Transfer successful',
+      message: 'Transfering is successful',
       transactionHash: receipt.transactionHash,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Transfer failed',
+      message: 'Transfering is failed.',
       error: error.message,
     });
   }

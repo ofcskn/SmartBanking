@@ -19,7 +19,7 @@ export default function GetBalanceScreen() {
   const { walletProvider } = useAppKitProvider();
 
   const getBalance = async () => {
-    if (walletProvider != undefined && user && isConnected) {
+    if (walletProvider != undefined && user && session && isConnected) {
       const ethersProvider = new BrowserProvider(walletProvider);
       const signer = await ethersProvider.getSigner();
       const message = `Get your balance that is in The Secure Bank!`;
