@@ -4,20 +4,20 @@ export class User implements UserInterface {
   _id: string;
   name: string;
   email: string;
-  balance: number;
+  imageUrl: string;
   password: string;
 
   constructor(
     _id: string,
     name: string,
     email: string,
-    balance: number,
+    imageUrl: string,
     password: string
   ) {
     this._id = _id;
     this.name = name;
     this.email = email;
-    this.balance = balance;
+    this.imageUrl = imageUrl;
     this.password = password;
   }
 }

@@ -29,6 +29,8 @@ mongoose
 app.use('/api/users', userRoutes); // All user routes will be prefixed with /api/users
 app.use('/api/banking', bankingRoutes); // All user routes will be prefixed with /api/users
 
+app.use('/api/uploads', express.static('uploads'));
+
 app.listen(PORT, API_LOCALHOST, () =>
   console.log(`Server running on port ${PORT}`)
 );

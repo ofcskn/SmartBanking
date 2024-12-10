@@ -67,10 +67,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
               password: password,
             })
             .then(async (response) => {
-              console.log('res', response);
               if (response.status == 200) {
                 const token = response.data.token;
-                console.log(token);
                 setSession(token);
 
                 // Redirect to the home

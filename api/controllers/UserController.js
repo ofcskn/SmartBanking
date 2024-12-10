@@ -3,7 +3,6 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const contractService = require('../services/contractService');
 
 // Configuration for environment variables
 dotenv.config();
@@ -19,7 +18,6 @@ exports.getUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   const user = new User(req.body);
-  console.log(req.body);
   try {
     // Hash the password
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -37,6 +35,27 @@ exports.createUser = async (req, res) => {
       console.log(err);
       res.status(500).json({ err: 'Internal Server Error' });
     }
+  }
+};
+
+exports.uploadImage = async (req, res, next) => {
+  const { userId } = req.body;
+  console.log(req);
+  try {
+    //await this.verifyToken(req, res, next);
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    user.imageUrl = req.file.originalname;
+    await user.save();
+    return res.status(200).json({
+      message: 'Image uploaded successfully',
+      imageUrl: user.imageUrl,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -59,7 +78,9 @@ exports.login = async (req, res) => {
 
 // Middleware to Verify Token
 exports.verifyToken = async (req, res, next) => {
-  const token = await req.headers['authorization'];
+  let { token } = req.body;
+  token =
+    token != null || undefined ? token : await req.headers['authorization'];
   if (!token) return res.status(403).json({ message: 'No token provided' });
 
   await jwt.verify(token, process.env.API_JWT_SECRET, async (err, decoded) => {
