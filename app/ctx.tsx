@@ -10,6 +10,9 @@ import axios, { AxiosHeaders } from 'axios';
 import config from './config/config';
 import { router } from 'expo-router';
 import { User } from './models/interfaces/User';
+import { useDisconnect } from '@reown/appkit-ethers-react-native';
+
+const { disconnect } = useDisconnect();
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => void;
@@ -77,9 +80,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
             })
             .catch((error) => console.error('Error fetching data:', error));
         },
-        signOut: () => {
+        signOut: async () => {
           setSignedUser(null);
           setSession(null);
+          // Remove Wallet
+          await disconnect();
         },
         session,
         isLoading,
