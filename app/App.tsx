@@ -1,9 +1,7 @@
 import './crypto-polyfill';
 import '@walletconnect/react-native-compat';
-
 import React from 'react';
 import RootLayout from './_layout';
-
 import { createAppKit, defaultConfig } from '@reown/appkit-ethers-react-native';
 
 const projectId = process.env.EXPO_PUBLIC_WALLETCONNECTION_ID || '';
@@ -19,6 +17,16 @@ const metadata = {
 };
 
 const config = defaultConfig({ metadata });
+
+// Ganache Network Settings
+const local = {
+  chainId: 1337,
+  name: 'Ganache',
+  currency: 'ETH',
+  explorerUrl: '',
+  rpcUrl:
+    process.env.EXPO_PUBLIC_BLOCKCHAIN_SERVER_IP || 'http://127.0.0.1:7545',
+};
 
 const mainnet = {
   chainId: 1,
@@ -36,7 +44,7 @@ const polygon = {
   rpcUrl: 'https://polygon-rpc.com',
 };
 
-const chains = [mainnet, polygon];
+const chains = [mainnet, polygon, local];
 
 createAppKit({
   projectId,

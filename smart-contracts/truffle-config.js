@@ -2,6 +2,9 @@
 // const infuraKey = "YOUR_INFURA_PROJECT_ID"; // Replace with your Infura Project ID
 // const mnemonic = "YOUR_MNEMONIC"; // Your wallet's mnemonic
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 module.exports = {
   networks: {
     // rinkeby: {
