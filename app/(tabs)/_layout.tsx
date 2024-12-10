@@ -71,6 +71,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="transfer"
+        options={{
+          title: 'Transfer',
+          href: null,
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome5
+              size={24}
+              name={focused ? 'user' : 'user-alt'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="deposit"
         options={{
           title: 'Deposit',
