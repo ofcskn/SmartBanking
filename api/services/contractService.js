@@ -1,12 +1,14 @@
 // services/contractService.js
 const { Web3 } = require('web3');
 const dotenv = require('dotenv');
+const { ethers } = require('ethers');
 
 // Environment variables configuration
 dotenv.config();
 
 // Smart contract details
 const contractAddress = process.env.API_CONTRACT_ADDRESS;
+const blockchainServerIp = process.env.BLOCKCHAIN_SERVER_IP;
 
 const contractABI = [
   {
@@ -112,7 +114,7 @@ const contractABI = [
 class ContractService {
   constructor() {
     // Connect to Ethereum node
-    this.web3 = new Web3('http://127.0.0.1:7545');
+    this.web3 = new Web3(blockchainServerIp);
     this.contract = new this.web3.eth.Contract(contractABI, contractAddress);
   }
 
@@ -139,20 +141,33 @@ class ContractService {
   }
 
   // deposit
-  async deposit(address, amount) {
+  async deposit(publicAddress, amountInEther, signature) {
     try {
       // Specify deposit transaction details
       const transaction = {
-        from: address,
+        from: publicAddress,
         to: contractAddress,
-        value: this.web3.utils.toWei(amount.toString(), 'ether'), // Convert ETH to Wei
-        gas: 3000000, // Gas limit, adjust as needed
+        value: this.web3.utils.toWei(amountInEther.toString(), 'ether'), // Convert ETH to Wei
+        gas: 200000, // Gas limit, adjust as needed
+        //data: this.contract.methods.deposit().encodeABI(),
       };
 
-      // Call the deposit function
-      const result = await this.contract.methods.deposit().send(transaction);
-      console.log('Deposit is successful!', result);
-      return this.getBalance(address);
+      const message = `${publicAddress} is depositing ${amountInEther} ETH to The Secure Bank!`;
+      const recoveredAddress = this.web3.eth.accounts.recover(
+        message,
+        signature
+      );
+
+      // Ensure the recovered address matches the sender's address
+      if (recoveredAddress.toLowerCase() !== publicAddress.toLowerCase()) {
+        return res.status(400).send({ error: 'Signature verification failed' });
+      }
+
+      // Proceed to interact with the smart contract
+      const receipt = await this.contract.methods.deposit().send(transaction);
+
+      console.log('Receipt: ', receipt);
+      return this.getBalance(publicAddress);
     } catch (error) {
       throw new Error('Failed: ' + error.message);
     }

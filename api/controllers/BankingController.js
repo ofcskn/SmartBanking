@@ -59,17 +59,20 @@ exports.transfer = async (req, res) => {
   }
 };
 
-// Deposit ETH to the bank
+// Deposit ETH to the bank by walletAddress
 exports.deposit = async (req, res) => {
-  const { userId, amount, walletAddress } = req.body;
+  const { amountEth, publicAddress, signature } = req.body;
 
   try {
-    const user = await User.findById(userId);
-    const balance = await contractService.deposit(walletAddress, amount);
-    res.json({ walletAddress, balance });
+    const balance = await contractService.deposit(
+      publicAddress,
+      amountEth,
+      signature
+    );
+    res.json({ publicAddress, balance, signature });
   } catch (error) {
-    console.error('Error fetching balance:', error);
-    res.status(500).json({ error: 'Could not fetch balance' });
+    console.error('Error trying to deposit:', error);
+    res.status(500).json({ error: 'Could not deposit to the bank.' });
   }
 };
 
