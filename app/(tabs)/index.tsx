@@ -43,7 +43,7 @@ export default function HomeScreen() {
           <ThemedButton
             title="Deposit"
             onPress={() => {
-              router.push('/(tabs)/account');
+              router.push('/(tabs)/deposit');
             }}
           />
           <ThemedButton

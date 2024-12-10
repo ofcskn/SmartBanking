@@ -10,7 +10,7 @@ import {
 import { useAppKitAccount } from '@reown/appkit-ethers-react-native';
 import axios, { AxiosHeaders } from 'axios';
 
-export default function LoginScreen() {
+export default function AccountScreen() {
   const { address, chainId, isConnected } = useAppKitAccount();
   const { user, session } = useSession();
   const { walletProvider } = useAppKitProvider();

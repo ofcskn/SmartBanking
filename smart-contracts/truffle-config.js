@@ -10,7 +10,7 @@ module.exports = {
     //     gas: 5500000, // Gas limit
     // },
     development: {
-      host: '127.0.0.1', // Localhost (default: none)
+      host: process.env.LOCALHOST_IP, // Localhost (default: none)
       port: 7545, // Ganache port (default: none)
       network_id: '5777', // Any network (default: none)
     },
