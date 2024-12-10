@@ -23,7 +23,6 @@ export default function UsersScreen() {
 
   // Creating a user
   const [name, setName] = useState<string>('');
-  const [walletAddress, setWalletAddress] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -32,7 +31,6 @@ export default function UsersScreen() {
       .post(`${config.apiUrl}/users/create`, {
         name: name,
         email: email,
-        walletAddress: walletAddress,
         password: password,
       })
       .then((response) => {
@@ -64,9 +62,6 @@ export default function UsersScreen() {
                 <View style={styles.infoContainer}>
                   <ThemedText type="subtitle">{item.name}</ThemedText>
                   <ThemedText>{item.email}</ThemedText>
-                  <ThemedText style={{ fontSize: 14 }} type="link">
-                    {item.walletAddress}
-                  </ThemedText>
                 </View>
               </ThemedView>
             )}
@@ -106,11 +101,6 @@ export default function UsersScreen() {
                     placeholder="Email"
                   />
                   <ThemedTextInput
-                    onChangeText={(data) => setWalletAddress(data)}
-                    value={walletAddress}
-                    placeholder="Wallet Adress (0x..)"
-                  />
-                  <ThemedTextInput
                     onChangeText={(data) => setPassword(data)}
                     value={password}
                     placeholder="Password"
@@ -126,7 +116,7 @@ export default function UsersScreen() {
                   </View>
                   <View style={{ marginBottom: 10 }}>
                     <Button
-                      title="Close Modal"
+                      title="Close"
                       onPress={() =>
                         setCreateUserModalVisible(!createUserModalVisible)
                       }
