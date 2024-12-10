@@ -41,8 +41,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [signedUser, setSignedUser] = useState<User>();
 
   useEffect(() => {
-
-      if (session != null && (signedUser == null || signedUser == undefined)) {
+    if (session != null && (signedUser == null || signedUser == undefined)) {
       axios
         .get(`${config.apiUrl}/users/verify`, {
           headers: new AxiosHeaders('authorization: ' + session),
@@ -68,7 +67,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
               password: password,
             })
             .then(async (response) => {
-              console.log("res", response)
+              console.log('res', response);
               if (response.status == 200) {
                 const token = response.data.token;
                 console.log(token);
