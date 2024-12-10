@@ -159,7 +159,6 @@ class ContractService {
         from: publicAddress,
         to: contractAddress,
         value: this.web3.utils.toWei(amountInEther.toString(), 'ether'), // Convert ETH to Wei
-        gas: 200000, // Gas limit, adjust as needed
         //data: this.contract.methods.deposit().encodeABI(),
       };
 
@@ -189,8 +188,6 @@ class ContractService {
       const transaction = {
         from: publicAddress,
         to: contractAddress,
-        gas: 53264, // Increase gas limit
-        gasPrice: await this.web3.eth.getGasPrice(),
         data: this.contract.methods.withdraw(amountInWei).encodeABI(), // Encoded ABI for withdraw function
       };
       const message = `${publicAddress} is withdrawing ${amountInEther} ETH from The Secure Bank!`;
