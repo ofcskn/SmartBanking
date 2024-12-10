@@ -128,11 +128,22 @@ class ContractService {
   }
 
   // get the balance of the user from the SecureBank.sol contract
-  async getBalance(address) {
+  async getBalance(publicAddress, signature) {
     try {
+      const message = `Get your balance that is in The Secure Bank!`;
+      const recoveredAddress = this.web3.eth.accounts.recover(
+        message,
+        signature
+      );
+
+      // Ensure the recovered address matches the sender's address
+      if (recoveredAddress.toLowerCase() !== publicAddress.toLowerCase()) {
+        return res.status(400).send({ error: 'Signature verification failed' });
+      }
+
       const balance = await this.contract.methods
         .getBalance()
-        .call({ from: address });
+        .call({ from: publicAddress });
       // Return ETH balance
       return this.web3.utils.fromWei(balance, 'ether');
     } catch (error) {
@@ -165,9 +176,7 @@ class ContractService {
 
       // Proceed to interact with the smart contract
       const receipt = await this.contract.methods.deposit().send(transaction);
-
-      console.log('Receipt: ', receipt);
-      return this.getBalance(publicAddress);
+      return 'success';
     } catch (error) {
       throw new Error('Failed: ' + error.message);
     }

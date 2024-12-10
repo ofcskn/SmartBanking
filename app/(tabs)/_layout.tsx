@@ -85,6 +85,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="getBalance"
+        options={{
+          title: 'Get Balance',
+          href: !user ? '/(tabs)/getBalance' : null,
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome5
+              size={24}
+              name={focused ? 'money' : 'money-alt'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="account"
         options={{
           title: 'Account',

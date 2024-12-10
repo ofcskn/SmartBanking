@@ -47,6 +47,12 @@ export default function HomeScreen() {
             }}
           />
           <ThemedButton
+            title="Get Balance"
+            onPress={() => {
+              router.push('/(tabs)/getBalance');
+            }}
+          />
+          <ThemedButton
             title="Sign out"
             onPress={() => {
               signOut();

@@ -9,14 +9,11 @@ const contractService = require('../services/contractService');
 dotenv.config();
 
 exports.getBalance = async (req, res) => {
-  const { userId } = req.body;
+  const { publicAddress, signature } = req.body;
 
   try {
-    const user = await User.findById(userId);
-    const address = user.walletAddress;
-    console.log(address);
-    const balance = await contractService.getBalance(address);
-    res.json({ address, balance });
+    const balance = await contractService.getBalance(publicAddress, signature);
+    res.json({ publicAddress, balance });
   } catch (error) {
     console.error('Error fetching balance:', error);
     res.status(500).json({ error: 'Could not fetch balance' });

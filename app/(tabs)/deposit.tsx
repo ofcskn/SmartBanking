@@ -36,6 +36,7 @@ export default function DepositScreen() {
             signature: signature,
           })
           .then((response) => {
+            setAmount('');
             Alert.alert('Successful!', 'You deposited successfully!.', [
               { text: 'Ok!' },
             ]);
