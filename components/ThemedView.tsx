@@ -1,4 +1,9 @@
-import { View, type ViewProps } from 'react-native';
+import {
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+  type ViewProps,
+} from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
 
@@ -18,5 +23,9 @@ export function ThemedView({
     'background'
   );
 
-  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={[{ backgroundColor }, style]} {...otherProps} />
+    </TouchableWithoutFeedback>
+  );
 }
