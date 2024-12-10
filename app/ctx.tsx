@@ -38,7 +38,7 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
-  const [signedUser, setSignedUser] = useState<User>();
+  const [signedUser, setSignedUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (session != null && (signedUser == null || signedUser == undefined)) {
@@ -80,6 +80,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
             .catch((error) => console.error('Error fetching data:', error));
         },
         signOut: () => {
+          setSignedUser(null);
           setSession(null);
         },
         session,
