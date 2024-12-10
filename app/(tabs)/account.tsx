@@ -66,7 +66,7 @@ export default function AccountScreen() {
     <ThemedView style={{ height: '100%' }}>
       <SafeAreaProvider>
         <SafeAreaView style={{ margin: 20 }}>
-          {user?.imageUrl && (
+          {imageUrl && (
             <ThemedView style={styles.imageContainer}>
               <Image
                 style={styles.image}
