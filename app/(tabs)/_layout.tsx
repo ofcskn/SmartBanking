@@ -74,7 +74,21 @@ export default function TabLayout() {
         name="deposit"
         options={{
           title: 'Deposit',
-          href: !user ? '/(tabs)/deposit' : null,
+          href: null,
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome5
+              size={24}
+              name={focused ? 'money' : 'money-alt'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="withdraw"
+        options={{
+          title: 'Withdraw',
+          href: null,
           tabBarIcon: ({ color, focused }) => (
             <FontAwesome5
               size={24}
@@ -88,7 +102,7 @@ export default function TabLayout() {
         name="getBalance"
         options={{
           title: 'Get Balance',
-          href: !user ? '/(tabs)/getBalance' : null,
+          href: null,
           tabBarIcon: ({ color, focused }) => (
             <FontAwesome5
               size={24}

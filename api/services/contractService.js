@@ -182,38 +182,31 @@ class ContractService {
     }
   }
 
-  async withdraw(address, privateKey, amountEth) {
+  async withdraw(publicAddress, amountInEther, signature) {
     try {
-      const gasPrice = await this.web3.eth.getGasPrice(); // Get the current gas price
-      const amountInWei = this.web3.utils.toWei(amountEth, 'ether');
+      const amountInWei = this.web3.utils.toWei(amountInEther, 'ether');
       // Specify withdraw transaction details
       const transaction = {
-        from: address,
+        from: publicAddress,
         to: contractAddress,
         gas: 53264, // Increase gas limit
-        gasPrice: gasPrice,
+        gasPrice: await this.web3.eth.getGasPrice(),
         data: this.contract.methods.withdraw(amountInWei).encodeABI(), // Encoded ABI for withdraw function
       };
-
-      // Ensure the contract has enough balance
-      const contractBalance = await this.web3.eth.getBalance(contractAddress);
-      if (parseInt(contractBalance) < parseInt(amountInWei)) {
-        return res.status(400).json({ error: 'Insufficient contract balance' });
+      const message = `${publicAddress} is withdrawing ${amountInEther} ETH from The Secure Bank!`;
+      const recoveredAddress = this.web3.eth.accounts.recover(
+        message,
+        signature
+      );
+      // Ensure the recovered address matches the sender's address
+      if (recoveredAddress.toLowerCase() !== publicAddress.toLowerCase()) {
+        return res.status(400).send({ error: 'Signature verification failed' });
       }
 
-      // Sign the transaction with the private key
-      const signedTransaction = await this.web3.eth.accounts.signTransaction(
-        transaction,
-        privateKey
-      );
-
-      // Send the signed transaction
-      const result = await this.web3.eth.sendSignedTransaction(
-        signedTransaction.rawTransaction
-      );
-
-      console.log('Withdraw is successful!', result);
-      return this.getBalance(address);
+      const receipt = await this.contract.methods
+        .withdraw(amountInWei)
+        .send(transaction);
+      return 'success';
     } catch (error) {
       throw new Error('Failed: ' + error.message);
     }

@@ -31,26 +31,24 @@ exports.getAccounts = async (req, res) => {
 
 // Transfer money to the other ETH address
 exports.transfer = async (req, res) => {
-  const { userId, toAddress, amountInWei, senderPrivateKey } = req.body;
+  const { fromAddress, toAddress, amountInWei, senderPrivateKey } = req.body;
 
   try {
-    const user = await User.findById(userId);
     const receipt = await contractService.transferWei(
-      user.walletAddress,
+      fromAddress,
       toAddress,
       amountInWei,
       senderPrivateKey
     );
-    console.log('Receipt: ', receipt);
     res.status(200).json({
       success: true,
-      message: 'Deposit successful',
+      message: 'Transfer successful',
       transactionHash: receipt.transactionHash,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Deposit failed',
+      message: 'Transfer failed',
       error: error.message,
     });
   }
@@ -61,12 +59,12 @@ exports.deposit = async (req, res) => {
   const { amountEth, publicAddress, signature } = req.body;
 
   try {
-    const balance = await contractService.deposit(
+    const receipt = await contractService.deposit(
       publicAddress,
       amountEth,
       signature
     );
-    res.json({ publicAddress, balance, signature });
+    res.json({ publicAddress, receipt, signature });
   } catch (error) {
     console.error('Error trying to deposit:', error);
     res.status(500).json({ error: 'Could not deposit to the bank.' });
@@ -75,19 +73,16 @@ exports.deposit = async (req, res) => {
 
 // withdraw ETH from the bank
 exports.withdraw = async (req, res) => {
-  const { userId, privateKey, amountEth } = req.body;
-
+  const { amountEth, publicAddress, signature } = req.body;
   try {
-    const user = await User.findById(userId);
-    const userAddress = user.walletAddress;
-    const balance = await contractService.withdraw(
-      userAddress,
-      privateKey,
-      amountEth
+    const receipt = await contractService.withdraw(
+      publicAddress,
+      amountEth,
+      signature
     );
-    res.json({ userAddress, balance });
+    res.json({ publicAddress, receipt });
   } catch (error) {
-    console.error('Error fetching balance:', error);
-    res.status(500).json({ error: 'Could not fetch balance' });
+    console.error('Error trying to withdraw:', error);
+    res.status(500).json({ error: 'Could not withdraw balance' });
   }
 };

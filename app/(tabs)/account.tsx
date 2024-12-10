@@ -37,7 +37,6 @@ export default function AccountScreen() {
           <ThemedText type="title">ACCOUNT</ThemedText>
           <ThemedText>Name: {user?.name}</ThemedText>
           <ThemedText>Email: {user?.email}</ThemedText>
-          <ThemedText>Wallet Address: {user?.walletAddress}</ThemedText>
           <ThemedText>Chain Id: {chainId}</ThemedText>
           <AppKitButton
             label="Connect Your Wallet"

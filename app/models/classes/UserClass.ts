@@ -5,7 +5,6 @@ export class User implements UserInterface {
   name: string;
   email: string;
   balance: number;
-  walletAddress: string;
   password: string;
 
   constructor(
@@ -13,14 +12,12 @@ export class User implements UserInterface {
     name: string,
     email: string,
     balance: number,
-    walletAddress: string,
     password: string
   ) {
     this._id = _id;
     this.name = name;
     this.email = email;
     this.balance = balance;
-    this.walletAddress = walletAddress;
     this.password = password;
   }
 }
