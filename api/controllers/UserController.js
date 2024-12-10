@@ -25,7 +25,6 @@ exports.createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
     const savedUser = await user.save(); // Save the new user
-    console.log(savedUser);
 
     res.status(201).json(savedUser);
   } catch (err) {
@@ -50,7 +49,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     const token = jwt.sign({ userId: user._id }, process.env.API_JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '1d',
     });
     res.json({ token });
   } catch (error) {
