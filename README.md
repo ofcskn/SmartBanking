@@ -6,14 +6,14 @@ This is a **SmartBanking** project created with [Expo](https://expo.dev), design
 
 Here are some screenshots of the application:
 
-1. ![Index](docs/assets/screenshots/index.PNG){: width="300px"}
-2. ![Connect Wallet](docs/assets/screenshots/connectwallet.PNG){: width="300px"}
-3. ![Create a User](docs/assets/screenshots/create.PNG){: width="300px"}
-4. ![Deposit](docs/assets/screenshots/deposit.PNG){: width="300px"}
-5. ![Get Balance](docs/assets/screenshots/getbalance.PNG){: width="300px"}
-6. ![Login](docs/assets/screenshots/login.PNG){: width="300px"}
-7. ![Transfer](docs/assets/screenshots/transfer.PNG){: width="300px"}
-8. ![Account](docs/assets/screenshots/walletaccount.PNG){: width="300px"}
+1. ![Index](docs/assets/screenshots/index.PNG | width=250)
+2. ![Connect Wallet](docs/assets/screenshots/connectwallet.PNG | width=250)
+3. ![Create a User](docs/assets/screenshots/create.PNG | width=250)
+4. ![Deposit](docs/assets/screenshots/deposit.PNG | width=250)
+5. ![Get Balance](docs/assets/screenshots/getbalance.PNG | width=250)
+6. ![Login](docs/assets/screenshots/login.PNG){:width="300px"}
+7. ![Transfer](docs/assets/screenshots/transfer.PNG | width=250)
+8. ![Account](docs/assets/screenshots/walletaccount.PNG | width=250)
 
 ## Get started
 
