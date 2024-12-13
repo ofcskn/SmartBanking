@@ -82,7 +82,7 @@ exports.verifyToken = async (req, res, next) => {
     token != null || undefined ? token : await req.headers['authorization'];
   if (!token) return res.status(403).json({ message: 'No token provided' });
 
-  await jwt.verify(token, process.env.API_JWT_SECRET, async (err, decoded) => {
+  await jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
       return res.status(500).json({ message: 'Failed to authenticate token' });
     } else {
