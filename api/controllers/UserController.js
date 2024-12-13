@@ -40,7 +40,6 @@ exports.createUser = async (req, res) => {
 
 exports.uploadImage = async (req, res, next) => {
   const { userId } = req.body;
-  console.log(req);
   try {
     //await this.verifyToken(req, res, next);
     const user = await User.findOne({ _id: userId });
@@ -67,7 +66,7 @@ exports.login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.API_JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });
     res.json({ token });

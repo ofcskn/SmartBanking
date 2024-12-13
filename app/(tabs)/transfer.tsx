@@ -19,7 +19,7 @@ export default function TransferScreen() {
   const { user, session } = useSession();
   const [amount, setAmount] = useState('');
   const [toAddress, setToAddress] = useState(
-    process.env.EXPO_PUBLIC_BLOCKCHAIN_EXAMPLE_ADDRESS || ''
+    process.env.BLOCKCHAIN_EXAMPLE_ACCOUNT_ADDRESS || ''
   );
   const { walletProvider } = useAppKitProvider();
 

@@ -24,8 +24,7 @@ const local = {
   name: 'Ganache',
   currency: 'ETH',
   explorerUrl: '',
-  rpcUrl:
-    process.env.EXPO_PUBLIC_BLOCKCHAIN_SERVER_IP || 'http://127.0.0.1:7545',
+  rpcUrl: process.env.BLOCKCHAIN_RPC_URL || 'http://127.0.0.1:7545',
 };
 
 const mainnet = {

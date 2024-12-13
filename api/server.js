@@ -6,10 +6,10 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const bankingRoutes = require('./routes/bankingRoutes');
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
-const PORT = process.env.PORT || 5000;
-const API_LOCALHOST = process.env.API_LOCALHOST || '0.0.0.0';
+const PORT = process.env.LOCALHOST_PORT || 5000;
+const API_LOCALHOST = process.env.LOCALHOST_IP || '0.0.0.0';
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(cors()); // This will allow all origins
 
 // Connect to MongoDB (update the connection string as needed)
 mongoose
-  .connect(process.env.API_CONNECTION_STR, {
+  .connect(process.env.MONGO_DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

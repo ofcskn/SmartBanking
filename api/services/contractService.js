@@ -7,8 +7,8 @@ const { ethers } = require('ethers');
 dotenv.config();
 
 // Smart contract details
-const contractAddress = process.env.API_CONTRACT_ADDRESS;
-const blockchainServerIp = process.env.BLOCKCHAIN_SERVER_IP;
+const contractAddress = process.env.BANK_CONTRACT_ADDRESS;
+const blockchainServerIp = process.env.BLOCKCHAIN_RPC_URL;
 
 const contractABI = [
   {

@@ -32,7 +32,7 @@ export default function DepositScreen() {
         await axios
           .post(`${process.env.EXPO_PUBLIC_API_URL}/banking/deposit`, {
             publicAddress: address,
-            amountEth: amount,
+            amountInEth: amount,
             signature: signature,
           })
           .then((response) => {

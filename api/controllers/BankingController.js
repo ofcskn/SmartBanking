@@ -20,15 +20,6 @@ exports.getBalance = async (req, res) => {
   }
 };
 
-exports.getAccounts = async (req, res) => {
-  try {
-    const accounts = await contractService.getAccounts(); // Fetch all users from the database
-    res.json(accounts);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
 // Transfer money to the other ETH address
 exports.transfer = async (req, res) => {
   const { fromAddress, toAddress, amountInEth, signature } = req.body;
@@ -54,17 +45,26 @@ exports.transfer = async (req, res) => {
   }
 };
 
+exports.getAccounts = async (req, res) => {
+  try {
+    const accounts = await contractService.getAccounts(); // Fetch all users from the database
+    res.json(accounts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Deposit ETH to the bank by walletAddress
 exports.deposit = async (req, res) => {
-  const { amountEth, publicAddress, signature } = req.body;
+  const { amountInEth, publicAddress, signature } = req.body;
 
   try {
     const receipt = await contractService.deposit(
       publicAddress,
-      amountEth,
+      amountInEth,
       signature
     );
-    res.json({ publicAddress, receipt, signature });
+    res.json({ publicAddress, receipt });
   } catch (error) {
     console.error('Error trying to deposit:', error);
     res.status(500).json({ error: 'Could not deposit to the bank.' });
@@ -73,11 +73,11 @@ exports.deposit = async (req, res) => {
 
 // withdraw ETH from the bank
 exports.withdraw = async (req, res) => {
-  const { amountEth, publicAddress, signature } = req.body;
+  const { amountInEth, publicAddress, signature } = req.body;
   try {
     const receipt = await contractService.withdraw(
       publicAddress,
-      amountEth,
+      amountInEth,
       signature
     );
     res.json({ publicAddress, receipt });
