@@ -66,6 +66,10 @@ export default function AccountScreen() {
     <ThemedView style={{ height: '100%' }}>
       <SafeAreaProvider>
         <SafeAreaView style={{ margin: 20 }}>
+          <ThemedView style={{ marginBottom: 20 }}>
+            <ThemedText type="subtitle">{user?.name}</ThemedText>
+            <ThemedText type="defaultSemiBold">{user?.email}</ThemedText>
+          </ThemedView>
           {imageUrl && (
             <ThemedView style={styles.imageContainer}>
               <Image
@@ -81,12 +85,12 @@ export default function AccountScreen() {
             onPress={() => pickImage()}
             title="Upload an image"
           ></ThemedButton>
-          <ThemedText>Name: {user?.name}</ThemedText>
-          <ThemedText>Email: {user?.email}</ThemedText>
-          <AppKitButton
-            label="Connect Your Wallet"
-            balance="show"
-          ></AppKitButton>
+          <ThemedView style={{ marginTop: 20, marginBottom: 20 }}>
+            <AppKitButton
+              label="Connect Your Wallet"
+              balance="show"
+            ></AppKitButton>
+          </ThemedView>
         </SafeAreaView>
       </SafeAreaProvider>
     </ThemedView>
