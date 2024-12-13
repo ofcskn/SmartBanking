@@ -5,6 +5,7 @@ Welcome to the documentation for the **SecureBanking App**. Below, you'll find g
 ## Documentation Contents
 
 - [Main README](../README.md): Project overview and quick start.
+- [APP Documentation](./APP.md): Expo App documentation.
 - [Smart Contracts](./SMARTCONTRACT.md): Details on the Solidity contracts.
 - [API Documentation](./API.md): Backend and API endpoints.
 - [Installation Guide](./INSTALLATION.md): How to set up the project locally.
